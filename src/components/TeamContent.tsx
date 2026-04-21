@@ -29,26 +29,27 @@ export function TeamContent({ teamMembers }: TeamContentProps) {
           <LanguageSwitcher />
         </header>
 
-        {teamMembers.map(member => (
-          <section key={member.name} className="mb-16 last:mb-0">
-            {member.data && member.data.rows.length > 0 ? (
-              <SheetDataGrid
-                data={member.data.rows}
-                title={`${member.name}'s ${translations.experience}`}
-                personName={member.name}
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-zinc-500">
-                <p>{translations.noDataAvailable} for {member.name}</p>
-              </div>
-            )}
-          </section>
-        ))}
-
-        {teamMembers.length === 0 && (
+        {/* Show team members or error state */}
+        {teamMembers.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-zinc-500">
             <p>{translations.noDataAvailable}</p>
           </div>
+        ) : (
+          teamMembers.map(member => (
+            <section key={member.name} className="mb-16 last:mb-0">
+              {member.data && member.data.rows.length > 0 ? (
+                <SheetDataGrid
+                  data={member.data.rows}
+                  title={`${member.name}'s ${translations.experience}`}
+                  personName={member.name}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center py-12 text-zinc-500">
+                  <p>{translations.noDataAvailable} for {member.name}</p>
+                </div>
+              )}
+            </section>
+          ))
         )}
       </main>
     </div>
