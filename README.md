@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Team CodeLager - Professional Portfolio
+
+A dynamic team portfolio built with Next.js 15 that loads team member data from Google Sheets.
+
+**Live Site:** https://codelager.vercel.app/
+
+## Architecture
+
+### Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4
+- **Animations:** Three.js + Vanta.js
+- **Markdown:** react-markdown
+- **Icons:** react-icons
+- **API Client:** googleapis
+
+## Google Sheets Integration
+
+### How It Works
+
+1. **Data Source:** Each team member has their own sheet/tab in a Google Spreadsheet
+2. **Authentication:** Uses a Google Service Account with OAuth2 (JWT)
+3. **Fetching:** Direct REST API calls to Google Sheets v4 API
+
+### Key Files
+
+```
+lib/
+├── sheets/
+│   ├── client.ts    # Google Sheets API client (REST)
+│   ├── parser.ts    # Data parsing
+│   └── types.ts     # TypeScript interfaces
+├── config.ts        # Environment config
+└── i18n.ts         # Translations
+```
+
+### Flow
+
+1. Server Component (`app/page.tsx`) fetches list of all sheets
+2. For each sheet, fetches the data rows
+3. Passes data to Client Component (`TeamContent`)
+4. Renders each member's experience in a grid
+
+### Security
+
+- Credentials stored as base64 in `GOOGLE_SERVICE_ACCOUNT_KEY` env var
+- Service Account has only read access (`spreadsheets.readonly` scope)
+- API calls happen server-side (credentials never exposed to client)
+
+## Environment Variables
+
+Required in Vercel:
+
+- `GOOGLE_SERVICE_ACCOUNT_KEY` - Base64-encoded service account JSON
+- `GOOGLE_SHEET_ID` - Google Sheets spreadsheet ID
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run locally
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Deploy to Vercel with one click:
 
-## Learn More
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Make sure to configure the environment variables in the Vercel dashboard.
